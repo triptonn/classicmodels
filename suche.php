@@ -56,6 +56,12 @@
                 $conn = new PDO("mysql:host=$servername;dbname=$dbname", $user, $password);
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 echo "DB Verbindung erfolgreich";
+                
+                $whitelist = ['productCode', 'productName', 'productLine', 'productScale', 'productDescription', 'productVendor'];
+                if (!in_array($kategorie, $whitelist)) {
+                    die("Ungültige Kategorie.");
+                }
+
 
                 //SQL
                 $sql = "SELECT * FROM products WHERE LOWER($kategorie) like LOWER(:suchbegriff)";
