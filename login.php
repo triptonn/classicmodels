@@ -105,39 +105,55 @@ try {
 
 <?php
 
-if(!empty($_POST)) {
-    $username = htmlspecialchars(trim($_POST["username"]));
-    $pwd_hash = password_hash(htmlspecialchars(trim($_POST["password"])), PASSWORD_BCRYPT);
+///////////////////////////////////////////////////////////////////////////////
+// Functionality: 
+///////////////////////////////////////////////////////////////////////////////
 
-    /* echo "Username: ".$username;
-    new_line();
-    echo "Password hash: ".$pwd_hash; */
-}
+    if(!empty($_POST)) {
+        $username = htmlspecialchars(trim($_POST["username"]));
+        // $pwd_hash = password_hash(htmlspecialchars(trim($_POST["password"])), PASSWORD_BCRYPT);
+        $pwd = htmlspecialchars(trim($_POST["password"]));
 
-// hash for pwd '1111': 
+        $host = "localhost";
+        $db = "classicmodels";
+        $charset = "utf8mb4";
 
+        $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+        $options = [
+            PDO::ATTR_ERRMODE               => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE    => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES      => false,
+        ];
 
-$host = "localhost";
-$db = "classicmodels";
-$charset = "utf8mb4";
+        if($username != NULL) {
+            session_start();
 
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-$options = [
-    PDO::ATTR_ERRMODE               => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE    => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES      => false,
-];
+            try {
+                $conn = new PDO($dsn, $admin, $admin_pwd, $options);
+                
+                $sql = "SELECT * FROM employees WHERE email = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute([$username]);
+                $user = $stmt->fetch();
 
-session_start();
+                if($user && password_verify($pwd, $user['hash'])) {
+                    $_SESSION['user_id'] = $user['employeeNumber'];
+                    header("Location: produkt_anlegen.php");
+                    exit;
+                } else {
+                    $error = "Falscher Benutzername oder Passwort!";
+                }
 
-try {
-    $conn = new PDO($dsn, $username, $pwd_hash, $options);
-} catch (Exception $e) {
-    echo "Exception caught: ".$e->getMessage();
-}
+                if(!empty($error)) {
+                    echo "<p style='color:red;'>$error</p>";
+                }
 
+            } catch (Exception $e) {
+                echo "<p stlye='color:red;'>Exception caught: ".$e->getMessage()."</p>";
+            }
+        }
+    }
 ?>
-
 
 <?php
 
