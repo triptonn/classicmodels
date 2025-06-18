@@ -3,10 +3,11 @@ Using XAMMP and the example DB from https://www.mysqltutorial.org/wp-content/upl
 
 Setup:
 
-- Clone this repository into */xampp/htdocs/'
-- Start Apache and mySql in the XAMPP Control panel
-- Import the 'mysqlsampledatabase.sql' using the myphpadmin console of XAMPP
-- Visit localhost:PORT/classicmodels/suche.php in your browser (default port is 80, often used port 8080)
+- Clone this repository into */xampp/htdocs/
+- Start Apache and MySQL in the XAMPP Control Panel
+- Import the 'mysqlsampledatabase.sql' using the phpMyAdmin console of XAMPP
+- Visit localhost:YOURPORT/classicmodels/suche.php in your browser (default port is 80, often used port 8080)
 
+To login user the following credentials:
 testuser: gbondur@classicmodelcars.com
 password: 1111
