@@ -9,7 +9,7 @@
     <body>
 <!--Link einfügen -->
         
-        <a href="/login.php">Login</a>
+        <a href="login.php">Login</a>
 
         <h1> Willkommen bei Classicmodels</h1>
 
