@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Document</title>
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
 <!--Link einfügen -->
@@ -14,29 +15,32 @@
         <h1> Willkommen bei Classicmodels</h1>
 
         <form action="?" method="post">
-          <p>Wähle eine Kategorie:</p>
+        <fieldset>
+            <legend>Wähle eine Kategorie:</legend>
 
-          <input type="radio" id="productCode" name="kategorie" value="productCode">
-          <label for="productCode">Produktnr.</label><br>
+            <input type="radio" id="productCode" name="kategorie" value="productCode">
+            <label for="productCode">Produktnr.</label><br>
 
-          <input type="radio" id="productName" name="kategorie" value="productName" checked>
-          <label for="productName">Name</label><br>
+            <input type="radio" id="productName" name="kategorie" value="productName" checked>
+            <label for="productName">Name</label><br>
 
-          <input type="radio" id="productLinie" name="kategorie" value="productLinie">
-          <label for="productLinie">Produkt Linie</label><br>
+            <input type="radio" id="productLine" name="kategorie" value="productLine">
+            <label for="productLine">Produktlinie</label><br>
 
-          <input type="radio" id="producScale" name="kategorie" value="productScale">
-          <label for="productScale">Maßstab</label><br>
+            <input type="radio" id="productScale" name="kategorie" value="productScale">
+            <label for="productScale">Maßstab</label><br>
 
-          <input type="radio" id="producDescription" name="kategorie" value="productDescription">
-          <label for="productDescription">Maßstab</label><br>
+            <input type="radio" id="productDescription" name="kategorie" value="productDescription">
+            <label for="productDescription">Beschreibung</label><br>
 
-          <input type="radio" id="producVendor" name="kategorie" value="productVendor">
-          <label for="productVendor">Hersteller</label><br>
+            <input type="radio" id="productVendor" name="kategorie" value="productVendor">
+            <label for="productVendor">Hersteller</label><br>
+        </fieldset>
 
-            <p>Suchbegriff eingeben:</P>
-            <input type="text" name="suchbegriff" placeholder="z.B. Harley Davidson"><br><br>
-          <button type="submit">Suchen</button>
+        <label for="suchbegriff">Suchbegriff eingeben:</label>
+        <input type="text" id="suchbegriff" name="suchbegriff" placeholder="z.B. Harley Davidson"><br><br>
+
+        <button type="submit">Suchen</button>
         </form>
 
         <?php
