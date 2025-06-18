@@ -101,7 +101,8 @@
     </div>
     <div class="form-row">
         <label for="password">Passwort:</label>
-        <input type="password" placeholder="Passwort eingeben" name="password" id="password" required>
+        <input type="password" placeholder="Passwort eingeben" name="password" id="password" autocomplete="current-password" required>
+        <input type="checkbox" onclick="show_password()">Passwort anzeigen
     </div>
     <div class="submit-row">
         <input type="submit" value="Absenden">
@@ -230,7 +231,12 @@ try {
     }
 ?>
 
+
+
 <?php
+    ///////////////////////////////////////////////////////////////////////////
+    // Helper Functions
+    ///////////////////////////////////////////////////////////////////////////
 
     function new_line() {
         echo "<br>";
@@ -243,6 +249,24 @@ try {
         echo "Password: '1111'";
         new_line();
     }
+
+    ///////////////////////////////////////////////////////////////////////////
 ?>
+
+  <!-- A little JavaScript cheating... -->
+
+<script>
+    function show_password() {
+        var x = document.getElementById("password");
+        if(x.type === "password") {
+           x.type = "text";
+        } else {
+          x.type = "password";
+        }
+    }
+</script>
+
+  <!-- Ends here -->
+
 
 </body>
