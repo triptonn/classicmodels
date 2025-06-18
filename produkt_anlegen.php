@@ -12,6 +12,7 @@
       margin: 0;
       padding: 2rem;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
@@ -30,6 +31,13 @@
       text-align: center;
       margin-bottom: 2rem;
       color: #f1f1f1;
+    }
+
+    .logout-row {
+      display: flex;
+      align-items: left;
+      margin-bottom: 0rem;
+      flex-wrap: wrap;
     }
 
     .form-row {
@@ -98,26 +106,38 @@
   </style>
 </head>
 <body>
-    <?php
-    ///////////////////////////////////////////////////////////////////////////////
-    // This needs to be at the top of this page!!
-    ///////////////////////////////////////////////////////////////////////////////
+  <?php
+  ///////////////////////////////////////////////////////////////////////////////
+  // This needs to be at the top of this page!!
+  ///////////////////////////////////////////////////////////////////////////////
 
-    session_start();
-    if (!isset($_SESSION['user_id'])) {
-        header("Location: login.php");
-        exit;
-    }
+  session_start();
+  if (isset($_POST['logout'])) {
+    session_unset();
+    session_destroy();
+    header("Location: suche.php");
+    exit;
+  }
 
-    ///////////////////////////////////////////////////////////////////////////////
-    ?>
-   
-  <form id="produktForm">
-    <h2>Produktinformationen</h2>
-    <!--Button  -->
-    <div id="logout">
-      <button type="submit">Logout</button>
+  if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////
+  ?>
+
+  <form method="POST" style="text-align:right;">
+    <div class="logout-row">
+      <button type="submit" name="logout" value="1">Logout</button>
     </div>
+  </form>
+
+  <br>
+
+  <form id="produktForm">
+
+    <h2>Produktinformationen</h2>
 
     <div class="form-row">
       <label for="p_code">Produkt Code:</label>
