@@ -58,7 +58,7 @@
                 echo "DB Verbindung erfolgreich";
 
                 //SQL
-                $sql = "SELECT * FROM products WHERE $kategorie like :suchbegriff";
+                $sql = "SELECT * FROM products WHERE LOWER($kategorie) like LOWER(:suchbegriff)";
                 $stmt = $conn ->prepare($sql);
                 $stmt->execute([':suchbegriff' => "%$suchbegriff%"]);
 
