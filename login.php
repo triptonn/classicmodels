@@ -117,14 +117,11 @@
 // - adding column "hash" to the employee table of 'classicmodels'
 ///////////////////////////////////////////////////////////////////////////////
 
+require "connection.php";
 
-$host = "localhost";
-$db = "classicmodels";
-$admin = "root";
-$admin_pwd = "";
 $charset = "utf8mb4";
 
-$dsn = "mysql:host=$host;dbname=$db;";
+$dsn = "mysql:host=$servername;dbname=$dbname;";
 
 try {
     $conn = new PDO($dsn, $admin, $admin_pwd);
@@ -139,7 +136,7 @@ try {
     HERE;
 
     $stmt = $conn->prepare($sql);
-    $stmt->execute(['db' => $db]);
+    $stmt->execute(['db' => $dbname]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if(!($result['col_count'] > 0)) {
