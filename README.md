@@ -8,6 +8,6 @@ Setup:
 - Import the 'mysqlsampledatabase.sql' using the phpMyAdmin console of XAMPP
 - Visit localhost:YOURPORT/classicmodels/suche.php in your browser (default port is 80, often used port 8080)
 
-To login user the following credentials:
+To login use the following credentials:
 testuser: gbondur@classicmodelcars.com
 password: 1111
