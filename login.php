@@ -257,11 +257,11 @@ try {
 
 <script>
     function show_password() {
-        var x = document.getElementById("password");
-        if(x.type === "password") {
-           x.type = "text";
+        var element = document.getElementById("password");
+        if(element.type === "password") {
+           element.type = "text";
         } else {
-          x.type = "password";
+          element.type = "password";
         }
     }
 </script>
