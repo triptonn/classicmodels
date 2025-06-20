@@ -68,6 +68,21 @@
       background-color: #444;
     }
 
+    .form-row select {
+      flex: 1;
+      padding: 0.5rem;
+      border: 1px solid #444;
+      background-color: #3a3a3a;
+      color: #eee;
+      border-radius: 6px;
+    }
+
+    .form-row select:focus {
+      border-color: #5fa8d3;
+      outline: none;
+      background-color: #444;
+    }
+
     .submit-row {
       text-align: center;
       margin-top: 2rem;
@@ -151,7 +166,30 @@
 
     <div class="form-row">
       <label for="linie">Linie:</label>
-      <input type="text" id="linie" name="linie" required>
+      <select id="linie" name="linie" required>
+        <option value="">Bitte wählen Sie eine Produktlinie</option>
+        <?php
+        // Fetch product lines from database
+        require "connection.php";
+        $charset = "utf8mb4";
+        $dsn = "mysql:host=$servername;dbname=$dbname;charset=$charset";
+        
+        try {
+          $conn = new PDO($dsn, $admin, $admin_pwd);
+          $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+          
+          $stmt = $conn->prepare("SELECT productLine FROM productlines ORDER BY productLine");
+          $stmt->execute();
+          $productLines = $stmt->fetchAll(PDO::FETCH_COLUMN);
+          
+          foreach ($productLines as $productLine) {
+            echo "<option value=\"" . htmlspecialchars($productLine) . "\">" . htmlspecialchars($productLine) . "</option>";
+          }
+        } catch (Exception $e) {
+          echo "<option value=\"\">Fehler beim Laden der Produktlinien</option>";
+        }
+        ?>
+      </select>
     </div>
 
     <div class="form-row">
@@ -212,7 +250,7 @@
 
     $charset = "utf8mb4";
 
-    $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
+    $dsn = "mysql:host=$servername;dbname=$dbname;charset=$charset";
 
     try {
       $conn = new PDO($dsn, $admin, $admin_pwd);
