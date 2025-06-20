@@ -9,9 +9,31 @@
     </head>
     <body>
 <!--Link einfügen -->
+        <?php
         
-        <a href="login.php">Login</a>
+        session_start();
 
+        if(isset($_POST['user_id'])) {
+            // Show logout button
+            
+        echo '<form method="post" action="">
+            <button type="submit" name="logout">Logout</button>
+            </form>';
+
+        } else {
+            // Show login button
+            echo  '<a href="login.php">Login</a>';
+            
+        if (isset($_POST['logout'])) {
+            session_unset();    
+            session_destroy();
+            header("Location: suche.php");
+            exit;
+        }
+
+        }
+        
+        ?>
         <h1> Willkommen bei Classicmodels</h1>
 
         <form action="?" method="post">
@@ -53,7 +75,7 @@
 
             try {
                 
-                $conn = new PDO("mysql:host=$servername;dbname=$dbname", $user, $password);
+                $conn = new PDO("mysql:host=$servername;dbname=$dbname", $admin, $admin_pwd);
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 echo "DB Verbindung erfolgreich";
                 

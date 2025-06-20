@@ -1,6 +1,6 @@
 <?php
 
 $servername = "localhost";
-$user = "root";
-$password = "";
+$admin = "root";
+$admin_pwd = "";
 $dbname = "classicmodels";

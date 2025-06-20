@@ -1,34 +1,136 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
-    <link rel="stylesheet" href="style.css" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Classic Models - Mitarbeiter-Login</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #1e1e1e;
+        color: #c0c0c0;
+        margin: 0;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+      form {
+        background-color: #2a2a2a;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+        width: 100%;
+        max-width: 500px;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: #f1f1f1;
+        font-size: 2rem;
+      }
+      a {
+        display: inline-block;
+        margin-bottom: 1rem;
+        color: #c0c0c0;
+        text-decoration: none;
+        font-weight: bold;
+        align-items: left;
+      }
+
+      a:focus, a:hover {
+        text-decoration: underline;
+      }
+
+      .form-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.2rem;
+        flex-wrap: wrap;
+      }
+      .form-row label {
+        width: 120px;
+        font-weight: 600;
+        color: #ddd;
+      }
+      .form-row input {
+        flex: 1;
+        padding: 0.5rem;
+        border: 1px solid #444;
+        background-color: #3a3a3a;
+        color: #eee;
+        border-radius: 6px;
+      }
+      .form-row input:focus {
+        border-color: #5fa8d3;
+        outline: none;
+        background-color: #444;
+      }
+      .submit-row {
+        text-align: center;
+        margin-top: 2rem;
+      }
+      button, input[type="submit"] {
+        background-color:rgb(98, 101, 102);
+        color: white;
+        border: none;
+        padding: 0.75rem 2rem;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      button:hover, input[type="submit"]:hover {
+        background-color: #3b7ca7;
+      }
+      @media (max-width: 600px) {
+        .form-row {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .form-row label {
+          width: 100%;
+          margin-bottom: 0.5rem;
+        }
+        .form-row input {
+          width: 100%;
+        }
+      }
+    </style>
 </head>
 
 <body>
+<?php
+    if (isset($_POST['back'])) {
+      header("Location: suche.php");
+      exit;
+    }
+?>
 
-<h1 class="page_title">Mitarbeiter Login</h1>
+<h1>Classic Models - Mitarbeiter Login</h1>
 
-<form method="POST" action="">
-    <table>
-        <td>
-        <h2 class="input_name">Email: </h2>
-        </td>
-        <td>
-        <input type="text" placeholder="Benutzernamen eingeben" name="username" id="username" required>
-        </td>
-        <td>
-        <h2 class="input_name">Passwort: </h2>
-        </td>
-        <td>
-        <input type="password" placeholder="Passwort eingeben" name="password" id="password" required>
-        </td>
-    </table>
-    <input type="submit" value="Absenden">
+<br>
+
+<!-- <form method="POST" action=""> -->
+<form method="POST">
+    <div class="form-row">
+        <label for="username">Email:</label>
+        <input type="text" placeholder="Benutzernamen eingeben" name="username" id="username">
+    </div>
+    <div class="form-row">
+        <label for="password">Passwort:</label>
+        <input type="password" placeholder="Passwort eingeben" name="password" id="password" autocomplete="current-password">
+        <input type="checkbox" onclick="show_password()">Passwort anzeigen
+    </div>
+    <div class="submit-row">
+        <button type="submit" name="back" value="1">zurück</button>
+        <input type="submit" value="Absenden">
+    </div>
 </form>
 
+<br>
 
 <?php
 ///////////////////////////////////////////////////////////////////////////////
@@ -36,14 +138,11 @@
 // - adding column "hash" to the employee table of 'classicmodels'
 ///////////////////////////////////////////////////////////////////////////////
 
+require "connection.php";
 
-$host = "localhost";
-$db = "classicmodels";
-$admin = "root";
-$admin_pwd = "";
 $charset = "utf8mb4";
 
-$dsn = "mysql:host=$host;dbname=$db;";
+$dsn = "mysql:host=$servername;dbname=$dbname;";
 
 try {
     $conn = new PDO($dsn, $admin, $admin_pwd);
@@ -58,7 +157,7 @@ try {
     HERE;
 
     $stmt = $conn->prepare($sql);
-    $stmt->execute(['db' => $db]);
+    $stmt->execute(['db' => $dbname]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if(!($result['col_count'] > 0)) {
@@ -91,19 +190,15 @@ try {
         $stmt = $conn->prepare($add_test_pwd_sql);
         $stmt->execute();
 
-        echo "Fake Password: '1111' added for employee with email: gbondur@classicmodelcars.com";
-        new_line();
     }
-
-
+    provide_test_user();
 } catch (Exception $e) {
     echo "Exception caught: ".$e->getMessage();
 }
-
 ///////////////////////////////////////////////////////////////////////////////
-?>
 
-<?php
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functionality: 
@@ -111,7 +206,6 @@ try {
 
     if(!empty($_POST)) {
         $username = htmlspecialchars(trim($_POST["username"]));
-        // $pwd_hash = password_hash(htmlspecialchars(trim($_POST["password"])), PASSWORD_BCRYPT);
         $pwd = htmlspecialchars(trim($_POST["password"]));
 
         $host = "localhost";
@@ -155,11 +249,42 @@ try {
     }
 ?>
 
+
+
 <?php
+    ///////////////////////////////////////////////////////////////////////////
+    // Helper Functions
+    ///////////////////////////////////////////////////////////////////////////
 
     function new_line() {
         echo "<br>";
     }
+
+    function provide_test_user() {
+        new_line();
+        echo "Test User: gbondur@classicmodelcars.com";
+        new_line();
+        echo "Password: '1111'";
+        new_line();
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
 ?>
+
+  <!-- A little JavaScript cheating... -->
+
+<script>
+    function show_password() {
+        var element = document.getElementById("password");
+        if(element.type === "password") {
+           element.type = "text";
+        } else {
+          element.type = "password";
+        }
+    }
+</script>
+
+  <!-- Ends here -->
+
 
 </body>
