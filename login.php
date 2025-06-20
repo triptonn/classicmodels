@@ -8,7 +8,7 @@
       body {
         font-family: 'Segoe UI', sans-serif;
         background-color: #1e1e1e;
-        color: #ccc;
+        color: #c0c0c0;
         margin: 0;
         padding: 2rem;
         display: flex;
@@ -31,6 +31,19 @@
         color: #f1f1f1;
         font-size: 2rem;
       }
+      a {
+        display: inline-block;
+        margin-bottom: 1rem;
+        color: #c0c0c0;
+        text-decoration: none;
+        font-weight: bold;
+        align-items: left;
+      }
+
+      a:focus, a:hover {
+        text-decoration: underline;
+      }
+
       .form-row {
         display: flex;
         align-items: center;
@@ -89,22 +102,30 @@
 </head>
 
 <body>
+<?php
+    if (isset($_POST['back'])) {
+      header("Location: suche.php");
+      exit;
+    }
+?>
 
 <h1>Classic Models - Mitarbeiter Login</h1>
 
 <br>
 
-<form method="POST" action="">
+<!-- <form method="POST" action=""> -->
+<form method="POST">
     <div class="form-row">
         <label for="username">Email:</label>
-        <input type="text" placeholder="Benutzernamen eingeben" name="username" id="username" required>
+        <input type="text" placeholder="Benutzernamen eingeben" name="username" id="username">
     </div>
     <div class="form-row">
         <label for="password">Passwort:</label>
-        <input type="password" placeholder="Passwort eingeben" name="password" id="password" autocomplete="current-password" required>
+        <input type="password" placeholder="Passwort eingeben" name="password" id="password" autocomplete="current-password">
         <input type="checkbox" onclick="show_password()">Passwort anzeigen
     </div>
     <div class="submit-row">
+        <button type="submit" name="back" value="1">zurück</button>
         <input type="submit" value="Absenden">
     </div>
 </form>
