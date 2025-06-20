@@ -1,13 +1,51 @@
+<?php
+session_start();
+
+if (!empty($_POST)) {
+    $username = htmlspecialchars(trim($_POST["username"]));
+    $password = htmlspecialchars(trim($_POST["password"]));
+
+    $host = "localhost";
+    $db = "classicmodels";
+    $admin = "root";
+    $admin_pwd = "";
+    $charset = "utf8mb4";
+    $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+
+    try {
+        $conn = new PDO($dsn, $admin, $admin_pwd, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        ]);
+
+        $stmt = $conn->prepare("SELECT * FROM employees WHERE email = ?");
+        $stmt->execute([$username]);
+        $user = $stmt->fetch();
+
+        if ($user && password_verify($password, $user['hash'])) {
+            $_SESSION['user_id'] = $user['employeeNumber'];
+            header("Location: produkt_anlegen.php");
+            exit;
+        } else {
+            $error = "Falscher Benutzername oder Passwort!";
+        }
+
+    } catch (Exception $e) {
+        $error = "Fehler: " . $e->getMessage();
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8">
+  <title>Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dunkles Produktformular</title>
+  <!-- Du nutzt genau das gleiche CSS wie für die Produktseite -->
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #1e1e1e; /* Dunkles Grau */
+      background-color: #1e1e1e;
       color: #ccc;
       margin: 0;
       padding: 2rem;
@@ -18,12 +56,12 @@
     }
 
     form {
-      background-color: #2a2a2a; /* Etwas heller als Body */
+      background-color: #2a2a2a;
       padding: 2rem;
       border-radius: 12px;
       box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
       width: 100%;
-      max-width: 700px;
+      max-width: 500px;
     }
 
     h2 {
@@ -66,7 +104,7 @@
     }
 
     button {
-      background-color:rgb(98, 101, 102);
+      background-color: rgb(98, 101, 102);
       color: white;
       border: none;
       padding: 0.75rem 2rem;
@@ -95,73 +133,37 @@
         width: 100%;
       }
     }
+
+    .error {
+      color: red;
+      text-align: center;
+      margin-top: 1rem;
+    }
   </style>
 </head>
 <body>
-    <?php
-    ///////////////////////////////////////////////////////////////////////////////
-    // This needs to be at the top of this page!!
-    ///////////////////////////////////////////////////////////////////////////////
 
-    session_start();
-    if (!isset($_SESSION['user_id'])) {
-        header("Location: login.php");
-        exit;
-    }
+  <form method="POST">
+    <h2>Login</h2>
 
-    ///////////////////////////////////////////////////////////////////////////////
-    ?>
-   
-  <form id="produktForm">
-    <h2>Produktinformationen</h2>
-    <!--Button  -->
-    <div id="logout">
-      <button type="submit">Logout</button>
+    <div class="form-row">
+      <label for="username">E-Mail:</label>
+      <input type="text" id="username" name="username" required>
     </div>
 
     <div class="form-row">
-      <label for="p_code">Produkt Code:</label>
-      <input type="text" id="p_code" name="p_code" required>
+      <label for="password">Passwort:</label>
+      <input type="password" id="password" name="password" required>
     </div>
 
-    <div class="form-row">
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name" required>
-    </div>
-
-    <div class="form-row">
-      <label for="linie">Linie:</label>
-      <input type="text" id="linie" name="linie">
-    </div>
-
-    <div class="form-row">
-      <label for="massstab">Maßstab:</label>
-      <input type="text" id="massstab" name="massstab">
-    </div>
-
-    <div class="form-row">
-      <label for="lieferant">Lieferant:</label>
-      <input type="text" id="lieferant" name="lieferant">
-    </div>
-
-    <div class="form-row">
-      <label for="details">Details:</label>
-      <input type="text" id="details" name="details">
-    </div>
-
-    <div class="form-row">
-      <label for="extra1">Zusätzliche Info:</label>
-      <input type="text" id="extra1" name="extra1">
-    </div>
-    
-
-    <!--Button  -->
     <div class="submit-row">
-      <button type="submit">Anlegen</button>
+      <button type="submit">Einloggen</button>
     </div>
+
+    <?php if (!empty($error)): ?>
+      <p class="error"><?= $error ?></p>
+    <?php endif; ?>
   </form>
-
-
 
 </body>
 </html>
