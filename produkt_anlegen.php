@@ -127,14 +127,18 @@
   ///////////////////////////////////////////////////////////////////////////////
 
   session_start();
-  if (isset($_POST['logout'])) {
+  if(isset($_POST['logout'])) {
     session_unset();
     session_destroy();
     header("Location: suche.php");
     exit;
   }
 
-  if (!isset($_SESSION['user_id'])) {
+  if(isset($_POST['suche'])) {
+    header("Location: suche.php");
+  }
+
+  if(!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
   }
@@ -142,9 +146,11 @@
   ///////////////////////////////////////////////////////////////////////////////
   ?>
 
-  <form method="POST" style="text-align:right;">
+  <form method="POST"  style="text-align:right;">
     <div class="logout-row">
       <button type="submit" name="logout" value="1">Logout</button>
+      <div style="margin-right: 50px; width: 300px"></div>
+      <button type="submit" name="suche" value="1">Suche</button>
     </div>
   </form>
 
