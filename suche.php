@@ -85,7 +85,6 @@
                 
                 $conn = new PDO("mysql:host=$servername;dbname=$dbname", $admin, $admin_pwd);
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                echo "DB Verbindung erfolgreich";
                 
                 $whitelist = ['productCode', 'productName', 'productLine', 'productScale', 'productDescription', 'productVendor'];
                 if (!in_array($kategorie, $whitelist)) {
