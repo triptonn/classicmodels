@@ -9,9 +9,15 @@
     </head>
     <body>
 <!--Link einfügen -->
+        <?php
+        if(isset($_POST['user_id'])) {
+            // Show logout button
+        } else {
+            // Show login button
+            echo  '<a href="login.php">Login</a>';
+        }
         
-        <a href="login.php">Login</a>
-
+        ?>
         <h1> Willkommen bei Classicmodels</h1>
 
         <form action="?" method="post">
