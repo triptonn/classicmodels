@@ -135,7 +135,7 @@
 
   <br>
 
-  <form id="produktForm">
+  <form id="produktForm" method="POST" action="">
 
     <h2>Produktinformationen</h2>
 
@@ -151,37 +151,87 @@
 
     <div class="form-row">
       <label for="linie">Linie:</label>
-      <input type="text" id="linie" name="linie">
+      <input type="text" id="linie" name="linie" required>
     </div>
 
     <div class="form-row">
       <label for="massstab">Maßstab:</label>
-      <input type="text" id="massstab" name="massstab">
+      <input type="text" id="massstab" name="massstab" required>
     </div>
 
     <div class="form-row">
       <label for="lieferant">Lieferant:</label>
-      <input type="text" id="lieferant" name="lieferant">
+      <input type="text" id="lieferant" name="lieferant" required>
     </div>
 
     <div class="form-row">
       <label for="details">Details:</label>
-      <input type="text" id="details" name="details">
+      <input type="text" id="details" name="details" required>
     </div>
 
     <div class="form-row">
-      <label for="extra1">Zusätzliche Info:</label>
-      <input type="text" id="extra1" name="extra1">
+      <label for="quantity_in_stock">Auf Lager:</label>
+      <input type="text" id="quantity_in_stock" name="quantity_in_stock" required>
     </div>
     
+    <div class="form-row">
+      <label for="buy_price">EK:</label>
+      <input type="text" id="buy_price" name="buy_price" required>
+    </div>
+
+    <div class="form-row">
+      <label for="msrp">UVP:</label>
+      <input type="text" id="msrp" name="msrp" required>
+    </div>
 
     <!--Button  -->
     <div class="submit-row">
       <button type="submit">Anlegen</button>
     </div>
   </form>
+  <?php
 
 
 
+///////////////////////////////////////////////////////////////////////////////
+// Functionality
+///////////////////////////////////////////////////////////////////////////////
+  require "connection.php";
+
+  if(!empty($_POST)) {
+    $p_code = htmlspecialchars(trim($_POST['p_code']));
+    $name = htmlspecialchars(trim($_POST['name']));
+    $linie = htmlspecialchars(trim($_POST['linie']));
+    $massstab = htmlspecialchars(trim($_POST['massstab']));
+    $lieferant = htmlspecialchars(trim($_POST['lieferant']));
+    $details = htmlspecialchars(trim($_POST['details']));
+    $quantity_in_stock = htmlspecialchars(trim($_POST['quantity_in_stock']));
+    $buy_price = htmlspecialchars(trim($_POST['buy_price']));
+    $msrp = htmlspecialchars(trim($_POST['msrp']));
+
+
+    $host = "localhost";
+    $dp = "classicmodels";
+    $charset = "utf8mb4";
+
+    $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
+
+    try {
+      $conn = new PDO($dsn, $admin, $admin_pwd);
+      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+      $sql = <<<HERE
+      INSERT INTO `products` (`productCode`, `productName`, `productLine`, `productScale`, `productVendor`, `productDescription`, `quantityInStock`, `buyPrice`, `MSRP`)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      HERE;
+
+      $stmt = $conn->prepare($sql);
+      $stmt->execute([$p_code, $name, $linie, $massstab, $lieferant, $details, $quantity_in_stock, $buy_price, $msrp]);
+      echo "<p style = color:green;'>Produkt erfolgreich hinzugefügt!</p>";
+    } catch (Exception $e) {
+      echo "<p stlye='color:red;'>Exception caught: ".$e->getMessage()."</p>";
+    }
+  }
+  ?>
 </body>
 </html>
