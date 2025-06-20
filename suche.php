@@ -21,10 +21,20 @@
             exit;
         }
 
+        if(isset($_POST['produkt_anlegen'])) {
+            header("Location: produkt_anlegen.php");
+            exit;
+        }
+
         if(isset($_SESSION['user_id'])) {
             // Show logout button
             echo '<form method="post" action="">
+                <div>
+                <div style="margin-right: 50px; width: 300px">
                 <button type="submit" name="logout">Logout</button>
+                <button type="submit" name="produkt_anlegen">Produkt anlegen</button>
+                </div>
+                </div>
                 </form>';
         } else {
             // Show login button
