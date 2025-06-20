@@ -10,11 +10,27 @@
     <body>
 <!--Link einfügen -->
         <?php
+        
+        session_start();
+
         if(isset($_POST['user_id'])) {
             // Show logout button
+            
+        echo '<form method="post" action="">
+            <button type="submit" name="logout">Logout</button>
+            </form>';
+
         } else {
             // Show login button
             echo  '<a href="login.php">Login</a>';
+            
+        if (isset($_POST['logout'])) {
+            session_unset();    
+            session_destroy();
+            header("Location: suche.php");
+            exit;
+        }
+
         }
         
         ?>
