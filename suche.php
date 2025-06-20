@@ -30,7 +30,7 @@
             // Show logout button
             echo '<form method="post" action="">
                 <div>
-                <div style="margin-right: 50px; width: 300px">
+                <div>
                 <button type="submit" name="logout">Logout</button>
                 <button type="submit" name="produkt_anlegen">Produkt anlegen</button>
                 </div>
