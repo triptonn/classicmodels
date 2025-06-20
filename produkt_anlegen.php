@@ -210,8 +210,6 @@
     $msrp = htmlspecialchars(trim($_POST['msrp']));
 
 
-    $host = "localhost";
-    $dp = "classicmodels";
     $charset = "utf8mb4";
 
     $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
